@@ -62,6 +62,14 @@ services:
     environment:
       - INSTANCE=${STACK_NAME?Variable not set}_loki-canary_1
 
+  tempo-gateway:
+    ports:
+      - "8081:8080"
+
+  otel-collector:
+    volumes:
+      - ./otel-collector/config.yaml:/etc/otelcol-contrib/config.yaml
+
   grafana:
     ports:
       - "3000:3000"

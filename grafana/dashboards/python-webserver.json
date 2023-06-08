@@ -1458,11 +1458,6 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "owl-qpoker-io_backend",
-          "value": "owl-qpoker-io_backend"
-        },
         "datasource": {
           "type": "prometheus",
           "uid": "prometheus"

@@ -15,6 +15,53 @@ services:
     ports:
       - "9100:9100"
 
+  promtail:
+    ports:
+      - "9080:80"
+    entrypoint:
+      - sh
+      - -euc
+      - |
+        cat <<EOF > /etc/promtail/config.yml
+        positions:
+          filename: /run/promtail/positions.yaml
+        clients:
+          - url: http://loki-gateway:8080/loki/api/v1/push
+            # tenant_id: fake
+        scrape_configs:
+          - job_name: container_scrape
+            docker_sd_configs:
+              - host: unix:///var/run/docker.sock
+                refresh_interval: 5s
+            relabel_configs:
+              - source_labels: ['__meta_docker_container_name']
+                regex: '/(.*)'
+                target_label: 'instance'
+              - source_labels: ['__meta_docker_container_log_stream']
+                target_label: 'stream'
+            pipeline_stages:
+              - static_labels:
+                  level: info
+        EOF
+        exec /usr/bin/promtail -config.file=/etc/promtail/config.yml
+    environment:
+      - HOSTNAME=random-node
+
+  minio:
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+
+  loki-gateway:
+    ports:
+      - "8082:8080"
+
+  loki-canary:
+    ports:
+      - "3500:3500"
+    environment:
+      - INSTANCE=${STACK_NAME?Variable not set}_loki-canary_1
+
   grafana:
     ports:
       - "3000:3000"

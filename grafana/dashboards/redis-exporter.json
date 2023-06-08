@@ -1523,11 +1523,6 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "owl-qpoker-io_redis-exporter",
-          "value": "owl-qpoker-io_redis-exporter"
-        },
         "datasource": {
           "type": "prometheus",
           "uid": "prometheus"

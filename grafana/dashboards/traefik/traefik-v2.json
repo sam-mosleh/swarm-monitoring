@@ -753,11 +753,6 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "qpoker-io-frontend@docker",
-          "value": "qpoker-io-frontend@docker"
-        },
         "datasource": {
           "type": "prometheus",
           "uid": "prometheus"

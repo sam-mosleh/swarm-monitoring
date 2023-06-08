@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  prometheus:
+    volumes:
+      - ./prometheus/conf:/etc/prometheus/
+    ports:
+      - "9090:9090"
+
+  cadvisor:
+    ports:
+      - "8080:8080"
+
+  node-exporter:
+    ports:
+      - "9100:9100"
+
+  grafana:
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./grafana/dashboards/:/etc/grafana/dashboards/
+    environment:
+      - GF_SERVER_ROOT_URL=http://${DOMAIN?Variable not set}/
+      - GF_SECURITY_COOKIE_SECURE=false
+
+networks:
+  traefik-public:
+    # For local dev, don't expect an external Traefik network
+    external: false
+  prometheus:
+    # For local dev, don't expect an external Traefik network
+    external: false
